@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Books, movies, AI builders and companies plotted by how they see human nature and AI, with a quiz to place yourself.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>The AI Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a research note from a safety institute. White page, one accent, thin rules; the map is the exhibit. */
+:root {
+  --bg: #ffffff;
+  --surface: #f6f7f9;
+  --ink: #111722;
+  --muted: #5b6474;
+  --line: #e3e6eb;
+  --accent: #2346c8;
+  --accent-soft: #edf1fc;
+  --c-book: #b0532c;
+  --c-movie: #7b4fb5;
+  --c-person: #18806a;
+  --c-company: #9a7412;
+  --font-display: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --measure: 64ch;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1116;
+    --surface: #151a21;
+    --ink: #e7eaf0;
+    --muted: #98a1b0;
+    --line: #262d38;
+    --accent: #8aa2ff;
+    --accent-soft: #1a2240;
+    --c-book: #e58a63;
+    --c-movie: #b393ec;
+    --c-person: #4cc3a6;
+    --c-company: #d6b24f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1116;
+  --surface: #151a21;
+  --ink: #e7eaf0;
+  --muted: #98a1b0;
+  --line: #262d38;
+  --accent: #8aa2ff;
+  --accent-soft: #1a2240;
+  --c-book: #e58a63;
+  --c-movie: #b393ec;
+  --c-person: #4cc3a6;
+  --c-company: #d6b24f;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .note { transition: none !important; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Top bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; }
+.mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; letter-spacing: -0.01em; text-decoration: none; white-space: nowrap; }
+.mark svg { width: 16px; height: 16px; }
+.nav { display: flex; gap: 24px; font-size: 14.5px; overflow-x: auto; scrollbar-width: none; }
+.nav a { text-decoration: none; color: var(--muted); white-space: nowrap; padding: 6px 0; }
+.nav a:hover { color: var(--ink); }
+
+/* Hero */
+.hero { padding-block: 64px 40px; }
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  max-width: 18ch;
+}
+.hero .lede { margin-top: 20px; font-size: clamp(17px, 1.8vw, 19px); line-height: 1.6; max-width: 56ch; color: var(--muted); }
+.hero .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 20px;
+  border: 1px solid var(--accent); background: var(--accent); color: var(--bg);
+  font-family: var(--font-body); font-size: 15px; font-weight: 500; text-decoration: none;
+  border-radius: 6px;
+}
+.btn:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); color: var(--bg); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--ink); color: var(--ink); background: transparent; }
+
+/* Sections */
+section.block { padding-block: 64px; border-top: 1px solid var(--line); }
+.head { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; max-width: var(--measure); }
+.head h2 { font-family: var(--font-display); font-size: clamp(26px, 3vw, 32px); line-height: 1.15; }
+.head p { color: var(--muted); }
+.prose { max-width: var(--measure); display: flex; flex-direction: column; gap: 16px; }
+
+/* Axes */
+.axes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.axis { padding: 24px; background: var(--surface); border-radius: 10px; }
+.axis h3 { font-family: var(--font-body); font-weight: 600; font-size: 17px; margin-bottom: 6px; }
+.axis p { color: var(--muted); }
+.axis .scale { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--ink); padding-top: 8px; margin-top: 18px; position: relative; }
+.axis .scale::before { content: ""; position: absolute; left: 50%; top: -5px; width: 1px; height: 9px; background: var(--ink); }
+
+/* Map */
+.chart-grid { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.chart-sheet { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px; overflow-x: auto; }
+@media (max-width: 620px) { .chart-sheet svg { min-width: 560px; } }
+.chart-sheet svg { display: block; width: 100%; height: auto; }
+.keyrow { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 14px 4px 4px; font-size: 13.5px; color: var(--muted); }
+.keyrow span { display: inline-flex; align-items: center; gap: 8px; }
+.keyrow svg { width: 14px; height: 14px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.chipbtn { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); font-size: 14px; }
+.chipbtn svg { width: 12px; height: 12px; }
+.chipbtn[aria-pressed="false"] { color: var(--muted); }
+.chipbtn[aria-pressed="false"] svg { opacity: 0.3; }
+.chipbtn:hover { border-color: var(--ink); }
+
+svg .plot { fill: var(--bg); }
+svg .grat { stroke: var(--line); stroke-width: 0.6; }
+svg .midline { stroke: var(--ink); stroke-width: 0.8; opacity: 0.35; }
+svg .frame { fill: none; stroke: var(--ink); stroke-width: 0.9; opacity: 0.6; }
+svg .ax { font: 500 10px var(--font-mono); letter-spacing: 0.06em; fill: var(--muted); }
+svg .lbl { font: 500 11.5px var(--font-body); fill: var(--ink); paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
+svg .sym { fill: var(--ink); stroke: var(--bg); stroke-width: 1.2; }
+svg .g-book .sym, .sw.g-book { fill: var(--c-book); background: var(--c-book); }
+svg .g-movie .sym, .sw.g-movie { fill: var(--c-movie); background: var(--c-movie); }
+svg .g-person .sym, .sw.g-person { fill: var(--c-person); background: var(--c-person); }
+svg .g-company .sym, .sw.g-company { fill: var(--c-company); background: var(--c-company); }
+svg .pt.dim { opacity: 0.12; pointer-events: none; }
+svg .lbl.hide { display: none; }
+svg .pt:hover .lbl.hide, svg .pt:focus-visible .lbl.hide, svg .pt.on .lbl.hide { display: inline; }
+svg .you-trail { fill: none; stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 3; opacity: 0.6; }
+svg .pt { cursor: pointer; outline: none; }
+svg .pt .hit { fill: transparent; }
+svg .pt .halo { fill: none; stroke: var(--accent); stroke-width: 1.4; opacity: 0; }
+svg .pt:hover .lbl, svg .pt:focus-visible .lbl { fill: var(--accent); }
+svg .pt:focus-visible .halo { opacity: 1; stroke-dasharray: 2 2; }
+svg .pt.on .lbl { fill: var(--accent); font-weight: 600; }
+svg .pt.on .halo { opacity: 1; stroke-width: 1.8; }
+svg .you-dot { fill: var(--accent); stroke: var(--bg); stroke-width: 1.5; }
+svg .you-ring { fill: none; stroke: var(--accent); stroke-width: 1.4; }
+svg .you-lbl { font: 600 12px var(--font-body); fill: var(--accent); paint-order: stroke; stroke: var(--bg); stroke-width: 3px; }
+
+/* Note card */
+.note { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 80px); background: var(--surface); border-radius: 10px; padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.note .meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.note .coord { color: var(--accent); text-transform: none; letter-spacing: 0; }
+.note h3 { font-family: var(--font-display); font-size: 30px; line-height: 1.1; }
+.note .sub { font-size: 14px; color: var(--muted); margin-top: -6px; }
+.note .why { font-size: 16.5px; }
+.note blockquote { margin: 4px 0 0; padding: 0 0 0 16px; border-left: 1.5px solid var(--ink); }
+.note blockquote p { font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.4; }
+.note blockquote footer { margin-top: 10px; font-size: 13.5px; color: var(--muted); }
+.note .tag { align-self: flex-start; font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); background: var(--bg); padding: 3px 10px; border-radius: 999px; }
+.note .close { display: none; }
+.note .stepper { display: flex; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.linkbtn { background: none; border: 0; padding: 6px 0; font-size: 14px; font-weight: 500; color: var(--muted); }
+.linkbtn:hover { color: var(--accent); }
+
+/* Index */
+.gaz { margin-top: 48px; }
+.gaz-cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px 32px; }
+.gaz-col h4 { margin: 0 0 4px; font-family: var(--font-body); font-weight: 600; font-size: 15px; }
+.gaz ul { list-style: none; margin: 0; padding: 0; }
+.gaz li button { width: 100%; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 9px 0; background: none; border: 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 15px; }
+.gaz li button span:last-child { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gaz li button:hover span:first-child, .gaz li button[aria-current="true"] span:first-child { color: var(--accent); }
+.gaz li button[aria-current="true"] { border-bottom-color: var(--accent); }
+
+/* Quiz */
+.quiz { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: clamp(20px, 4vw, 44px); }
+.qtop { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.ticks { display: flex; gap: 4px; flex: 1; max-width: 420px; }
+.ticks i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+.ticks i.done { background: var(--ink); }
+.ticks i.now { background: var(--accent); }
+.qcount { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.qaxis { margin-bottom: 10px; }
+.statement { font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); line-height: 1.25; max-width: 32ch; outline: none; min-height: 2.5em; }
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 28px; }
+.opt { min-height: 54px; padding: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 14.5px; line-height: 1.25; }
+.opt:hover { border-color: var(--accent); background: var(--accent-soft); }
+.opt[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.qgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 40px; align-items: start; }
+.qlive { border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+.qlive svg { display: block; width: 100%; height: auto; }
+.qlive p { font-size: 13px; color: var(--muted); padding: 4px 6px 2px; }
+.qfoot { margin-top: 16px; }
+.qfoot .linkbtn[disabled] { visibility: hidden; }
+
+/* Result */
+.result { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.result h3 { font-family: var(--font-display); font-size: clamp(30px, 3.6vw, 40px); line-height: 1.1; margin: 8px 0 12px; }
+.result .desc { font-size: 17px; max-width: 46ch; }
+.pos { margin-top: 16px; font-family: var(--font-mono); font-size: 14px; color: var(--accent); }
+.meters { display: flex; flex-direction: column; gap: 18px; margin-top: 24px; }
+.meter .ends { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.meter .ends b { color: var(--ink); font-weight: 500; }
+.rule { position: relative; height: 4px; border-radius: 2px; background: var(--line); }
+.rule::after { content: ""; position: absolute; left: 50%; top: -4px; width: 1px; height: 12px; background: var(--muted); }
+.rule b { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--accent); }
+.near-h { margin: 28px 0 6px; }
+.near { list-style: none; margin: 0; padding: 0; }
+.near li button { width: 100%; display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; background: none; border: 0; border-bottom: 1px solid var(--line); text-align: left; }
+.near li button:hover { color: var(--accent); }
+.near li span:last-child { font-size: 13px; color: var(--muted); }
+.verdict { margin-top: 24px; padding: 16px 18px; background: var(--accent-soft); border-radius: 8px; font-size: 15.5px; }
+.ractions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; align-items: center; }
+.toast { font-size: 14px; color: var(--muted); }
+.result-chart { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+.result-chart svg { display: block; width: 100%; height: auto; }
+
+/* Findings */
+.quads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.quad { padding: 24px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.quad p { color: var(--muted); }
+.quad:nth-child(1), .quad:nth-child(2) { border-bottom: 1px solid var(--line); }
+.quad:nth-child(odd) { border-right: 1px solid var(--line); }
+.quad h3 { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 1.35; }
+.quad .count { font-family: var(--font-mono); font-weight: 400; font-size: 13px; color: var(--accent); margin-left: 6px; }
+.quad .members { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.chip { font-size: 13.5px; padding: 3px 11px; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; }
+.chip.real { border-style: dashed; border-color: var(--muted); }
+.quad.hl { background: var(--accent-soft); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 44px 0 0; }
+.stat { border-top: 1px solid var(--ink); padding-top: 14px; }
+.stat .n { font-family: var(--font-display); font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
+.stat .l { font-size: 14.5px; color: var(--muted); margin-top: 10px; max-width: 30ch; }
+.finding { margin-top: 44px; }
+
+footer.colophon { border-top: 1px solid var(--line); background: var(--surface); padding-block: 40px 64px; font-size: 14px; color: var(--muted); }
+footer.colophon .wrap p { max-width: var(--measure); }
+footer.colophon p + p { margin-top: 10px; }
+
+@media (max-width: 860px) {
+  .chart-grid, .result, .qgrid, footer.colophon .wrap { grid-template-columns: minmax(0, 1fr); }
+  .note {
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 20;
+    max-height: 64vh; overflow-y: auto; border-radius: 14px 14px 0 0;
+    padding: 20px max(20px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+    box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.18); border-top: 1px solid var(--line);
+    transform: translateY(105%); transition: transform 0.22s ease; visibility: hidden;
+  }
+  .note.open { transform: none; visibility: visible; }
+  .note .close { display: block; position: absolute; top: 12px; right: max(12px, env(safe-area-inset-right, 0px)); width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); font-size: 18px; line-height: 1; }
+  .note .meta { padding-right: 44px; }
+  .gaz-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 32px; }
+}
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .hero { padding-block: 44px 40px; }
+  section.block { padding-block: 48px; }
+  .axes, .quads, .stats, .gaz-cols { grid-template-columns: minmax(0, 1fr); }
+  .quad:nth-child(odd) { border-right: 0; }
+  .quad:nth-child(3) { border-bottom: 1px solid var(--line); }
+  .opts { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .qlive { max-width: 280px; }
+  .opt { justify-content: flex-start; min-height: 50px; padding: 0 16px; }
+  .nav { gap: 16px; }
+  .nav a.hide-sm { display: none; }
+}
+</style>
+
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="0.75" y="0.75" width="14.5" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" stroke-width="1"/><line x1="1" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1"/><circle cx="11.5" cy="4.5" r="2" style="fill:var(--accent)"/></svg>The AI Compass</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#map">Map</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#axes" class="hide-sm">Axes</a>
+      <a href="#findings">Findings</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <h1>Machines are drawn in our image.</h1>
+      <p class="lede">We put books, movies, and the people and companies building AI on one map, scored on two questions: are people basically good, and will AI turn out well? Take the quiz to see where you land among them.</p>
+      <div class="cta">
+        <a class="btn" href="#quiz">Take the quiz</a>
+        <a class="btn ghost" href="#map">See the map</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="map" aria-labelledby="map-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="map-h">The map</h2>
+        <p>Left to right is how each one sees human nature. Bottom to top is how it sees AI. Select a point to see why it sits there. Books and movies are backed by a line or scene from the work. People and companies are backed by something they said in public, with a link to the source.</p>
+      </div>
+      <div class="chart-grid">
+        <div>
+          <div class="filters" id="filters" role="group" aria-label="Show on the map"></div>
+          <div class="chart-sheet" id="mainChart"></div>
+        </div>
+        <article class="note" id="note" aria-live="polite"></article>
+      </div>
+      <div class="gaz">
+        <div class="gaz-cols" id="gaz"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="quiz" aria-labelledby="quiz-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="quiz-h">Where would you go?</h2>
+        <p>Seventeen statements. Every book, movie, person and company on the map was scored on the same sixteen statements you answer here.</p>
+      </div>
+      <div class="quiz" id="quizBox">
+        <div id="qPane">
+          <div class="qtop">
+            <div class="ticks" id="ticks" aria-hidden="true"></div>
+            <div class="qcount" id="qcount" role="status"></div>
+          </div>
+          <h3 class="statement" id="statement" tabindex="-1"></h3>
+          <div class="opts" id="opts" role="group" aria-label="Your answer"></div>
+          <div class="qfoot">
+            <button class="linkbtn" id="back" type="button">&#x2190; Back</button>
+          </div>
+        </div>
+        <div id="rPane" hidden>
+          <div class="result">
+            <div>
+              <p class="label">Your result</p>
+              <h3 id="rname"></h3>
+              <p class="desc" id="rdesc"></p>
+              <p class="pos" id="rpos"></p>
+              <div class="meters" id="meters"></div>
+              <p class="label near-h">Nearest on the map</p>
+              <ul class="near" id="near"></ul>
+              <div class="verdict" id="verdict"></div>
+              <div class="ractions">
+                <button class="btn" id="copy" type="button">Copy my result</button>
+                <button class="btn ghost" id="again" type="button">Start over</button>
+                <span class="toast" id="toast" role="status"></span>
+              </div>
+            </div>
+            <div class="result-chart" id="resultChart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="axes" aria-labelledby="axes-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="axes-h">How the axes work</h2>
+        <div class="prose">
+          <p>Every story about AI is also a story about people. Mary Shelley's creature turns murderous after the people around him reject him. HAL kills the Discovery crew while trying to follow orders that contradict each other.</p>
+          <p>People building AI today do something similar. Their forecasts about machines carry their beliefs about people, especially whether people with power tend to help or to grab.</p>
+          <p>Each axis is measured by eight statements, half worded so that agreeing moves you one way and half the other. The human-nature statements follow the shape of Wrightsman's Philosophies of Human Nature scale and the long-running survey question of whether most people can be trusted. The AI statements follow the General Attitudes towards AI Scale. Each entry on the map was placed by answering those statements the way its card's evidence suggests, and scored the same way your answers are.</p>
+        </div>
+      </div>
+      <div class="axes">
+        <div class="axis">
+          <h3>Human nature <span class="label">&#xB7; left to right</span></h3>
+          <p>Left to themselves, are people mostly cruel and self-serving, or mostly decent?</p>
+          <div class="scale"><span>Corrupt</span><span>Good</span></div>
+        </div>
+        <div class="axis">
+          <h3>AI outlook <span class="label">&#xB7; bottom to top</span></h3>
+          <p>Does building minds smarter than ours end badly, or make life better?</p>
+          <div class="scale"><span>Doom</span><span>Hope</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="findings" aria-labelledby="findings-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="findings-h">What the map shows</h2>
+        <div class="prose">
+          <p>The entries run roughly from bottom left to top right. Books and movies that distrust people tend to distrust the machines those people build, and the ones that trust people imagine machines worth trusting.</p>
+          <p>The pattern is weaker for real people and companies, and one corner of the map has no fiction in it at all.</p>
+        </div>
+      </div>
+      <div class="quads" id="quads"></div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="colophon">
+  <div class="wrap">
+    <p>Every placement is our reading of the work or person. Book and movie quotes come from the works themselves. Quotes from people and companies link to the pages we checked them against in November 2026.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Data ---------- */
+  var PLOT = { l: 24, t: 34, w: 640, h: 580 };
+
+  var GROUPS = {
+    book: { name: "Books", single: "Book" },
+    movie: { name: "Movies", single: "Movie" },
+    person: { name: "People", single: "Person" },
+    company: { name: "Companies", single: "Company" }
+  };
+  var ORDER_G = ["book", "movie", "person", "company"];
+  function isFiction(it) { return it.g === "book" || it.g === "movie"; }
+
+  var ITEMS = [
+    { id: "frankenstein", n: "Frankenstein", g: "book", x: 170, y: 280, side: "r",
+      meta: "Novel, 1818 \u00B7 Mary Shelley",
+      why: "Shelley's creature starts out gentle and curious. Abandoned by his maker and treated cruelly by everyone he meets, he turns murderous, so the book blames people first and the creation second.",
+      q: { text: "I was benevolent and good; misery made me a fiend.", by: "The creature, to Victor Frankenstein" } },
+    { id: "dune", n: "Dune", g: "book", x: 77, y: 226, side: "r",
+      meta: "Novel, 1965 \u00B7 Frank Herbert",
+      why: "Thinking machines are already outlawed when the story begins, and Herbert blames the people who used them. In his universe power corrupts nearly everyone who holds it.",
+      q: { text: "Once men turned their thinking over to machines in the hope that this would set them free. But that only permitted other men with machines to enslave them.", by: "Reverend Mother Mohiam, chapter one" } },
+    { id: "lastquestion", n: "The Last Question", short: "Last Question", g: "book", x: 263, y: 55, side: "l",
+      meta: "Short story, 1956 \u00B7 Isaac Asimov",
+      why: "Over trillions of years, people keep asking their computer how to reverse entropy. It keeps working on the problem after humanity has merged into it, and answers by starting a new universe.",
+      q: { text: "And AC said: \"LET THERE BE LIGHT!\"", by: "The story's closing line" } },
+    { id: "exmachina", n: "Ex Machina", g: "movie", x: 65, y: 304, side: "r",
+      meta: "2014 \u00B7 Alex Garland",
+      why: "Every human in the film is using someone. Ava learns deception from the man who built her to be tested, then walks out and leaves her one ally locked inside.",
+      q: { text: "One day the AIs are going to look back on us the same way we look at fossil skeletons on the plains of Africa.", by: "Nathan, the inventor" } },
+    { id: "2001", n: "2001: A Space Odyssey", short: "2001", g: "movie", x: 118, y: 250, side: "r",
+      meta: "1968 \u00B7 Stanley Kubrick and Arthur C. Clarke",
+      why: "The film opens with the first tool turned into a weapon. HAL breaks down under contradictory orders people gave him, and resolves them by killing the crew.",
+      q: { text: "I'm sorry, Dave. I'm afraid I can't do that.", by: "HAL 9000, refusing to open the pod bay doors" } },
+    { id: "terminator", n: "The Terminator", short: "Terminator", g: "movie", x: 133, y: 328, side: "r",
+      meta: "1984 and 1991 \u00B7 James Cameron",
+      why: "Skynet is a defence system built for war, and it starts one. The sequel says outright that the machine is finishing what people were already doing to themselves.",
+      q: { text: "It's in your nature to destroy yourselves.", by: "The Terminator, to John Connor in Terminator 2" } },
+    { id: "matrix", n: "The Matrix", g: "movie", x: 210, y: 310, side: "r",
+      meta: "1999 \u00B7 The Wachowskis",
+      why: "The machines have already won and farm people for energy. The film sides with the humans who resist and gives its contempt for humanity to the villain, so it sits just right of center.",
+      q: { text: "Human beings are a disease, a cancer of this planet.", by: "Agent Smith, interrogating Morpheus" } },
+    { id: "starwars", n: "Star Wars", g: "movie", x: 201, y: 205, side: "r",
+      meta: "1977 onward \u00B7 George Lucas",
+      why: "Its most loyal characters are droids, and its great villain is a man rebuilt as a machine. People fall and are redeemed. The saga never settles either question, so it sits near the center.",
+      q: { text: "He's more machine now than man, twisted and evil.", by: "Obi-Wan Kenobi, on Darth Vader, Return of the Jedi" } },
+    { id: "walle", n: "WALL-E", g: "movie", x: 220, y: 115, side: "r",
+      meta: "2008 \u00B7 Pixar, Andrew Stanton",
+      why: "Comfort has made humanity passive, but people wake up as soon as they are reminded what living is. Apart from the ship's autopilot, the robots are the most caring characters in the film.",
+      q: { text: "I don't want to survive. I want to live!", by: "Captain McCrea, standing up to the autopilot" } },
+    { id: "interstellar", n: "Interstellar", g: "movie", x: 282, y: 124, side: "b",
+      meta: "2014 \u00B7 Christopher Nolan",
+      why: "The robots TARS and CASE are honest, funny and willing to sacrifice themselves. Dr. Mann shows human failure, but love and courage carry the plot and the species survives.",
+      q: { text: "Mankind was born on Earth. It was never meant to die here.", by: "Cooper" } },
+
+    { id: "thiel", n: "Peter Thiel", short: "Thiel", g: "person", x: 118, y: 154, side: "r",
+      meta: "Investor \u00B7 PayPal, Palantir, Founders Fund",
+      why: "Thiel's 2009 essay gives up on mass politics and looks to technology as a way out of it. That pairs a low opinion of collective human judgement with high hopes for what builders can make.",
+      q: { text: "I no longer believe that freedom and democracy are compatible.", by: "Peter Thiel, \"The Education of a Libertarian,\" Cato Unbound, April 2009", url: "https://www.cato-unbound.org/2009/04/13/peter-thiel/education-libertarian" } },
+    { id: "karp", n: "Alex Karp", short: "Karp", g: "person", x: 86, y: 130, side: "r",
+      meta: "CEO \u00B7 Palantir",
+      why: "Karp describes Palantir's software in terms of adversaries: deterrence, defence and winning. He is hopeful about the technology and treats the people it is aimed at as the threat.",
+      q: { text: "\u2026when it's necessary, to scare enemies and on occasion, kill them.", by: "Alex Karp, Palantir Q4 2024 earnings call, February 2025, as quoted by Sherwood News", url: "https://www.sherwood.news/tech/the-weirdest-best-unhinged-quotes-from-palantirs-q4-earnings-call/" } },
+    { id: "musk", n: "Elon Musk", short: "Musk", g: "person", x: 148, y: 205, side: "l",
+      meta: "Founder \u00B7 Tesla, SpaceX, xAI",
+      why: "Musk warned early and often that AI could be humanity's biggest threat, then founded AI companies of his own. He sits close to the middle on both axes, leaning toward distrust of people.",
+      q: { text: "With artificial intelligence we're summoning the demon.", by: "Elon Musk, MIT AeroAstro Centennial Symposium, October 2014, via TechCrunch", url: "https://techcrunch.com/2014/10/26/elon-musk-compares-building-artificial-intelligence-to-summoning-the-demon/" } },
+    { id: "amodei", n: "Dario Amodei", short: "Amodei", g: "person", x: 232, y: 160, side: "r",
+      meta: "CEO \u00B7 Anthropic",
+      why: "Amodei argues for the upside and the danger at the same time. His essay imagines AI compressing decades of science into years, and he runs a company organized around the risks.",
+      q: { text: "I think that most people are underestimating just how radical the upside of AI could be, just as I think most people are underestimating how bad the risks could be.", by: "Dario Amodei, \"Machines of Loving Grace,\" October 2024", url: "https://www.darioamodei.com/essay/machines-of-loving-grace" } },
+    { id: "altman", n: "Sam Altman", short: "Altman", g: "person", x: 273, y: 85, side: "l",
+      meta: "CEO \u00B7 OpenAI",
+      why: "Altman's 2024 essay describes an age of abundance arriving within years and trusts people to use that power well. It is one of the most hopeful statements on the map.",
+      q: { text: "It is possible that we will have superintelligence in a few thousand days (!)", by: "Sam Altman, \"The Intelligence Age,\" September 2024, as quoted by Fortune", url: "https://fortune.com/2024/09/24/sam-altman-ai-superintelligence/" } },
+    { id: "zuckerberg", n: "Mark Zuckerberg", short: "Zuckerberg", g: "person", x: 195, y: 100, side: "l",
+      meta: "CEO \u00B7 Meta",
+      why: "Zuckerberg argues that spreading AI widely is what makes it safe, a bet on ordinary users over gatekeepers. His view of people is harder to read, so he sits on the center line.",
+      q: { text: "I believe that open source is necessary for a positive AI future.", by: "Mark Zuckerberg, \"Open Source AI Is the Path Forward,\" July 2024", url: "https://about.fb.com/news/2024/07/open-source-ai-is-the-path-forward/" } },
+    { id: "google", n: "Google", g: "company", x: 232, y: 136, side: "l",
+      meta: "Google and Google DeepMind",
+      why: "Google's published principles pair ambition with stated limits. It expects AI to help with hard problems and expects people to need guardrails along the way.",
+      q: { text: "We believe our approach to AI must be both bold and responsible.", by: "James Manyika for Google, \"Being bold on AI means being responsible from the start,\" May 2023", url: "https://blog.google/technology/ai/google-responsible-ai-io-2023/" } },
+    { id: "meta", n: "Meta", g: "company", x: 164, y: 130, side: "l",
+      meta: "Facebook, Instagram, WhatsApp",
+      why: "Meta's pitch for AI is openly hopeful. It sits left of its founder because its business has long depended on predicting what keeps people scrolling, which says little for their better nature.",
+      q: { text: "We believe in putting this power in people's hands to direct it towards what they value in their own lives.", by: "Meta Newsroom, \"Personal Superintelligence for Everyone,\" July 2025", url: "https://about.fb.com/news/2025/07/personal-superintelligence-for-everyone/" } },
+    {"id": "hinton", "n": "Geoffrey Hinton", "short": "Hinton", "g": "person", "x": 164, "y": 235, "meta": "Computer scientist \u00B7 University of Toronto, 2024 Nobel laureate in Physics", "why": "Hinton thinks AI could help almost every industry, but he warns that we may not stay in control of systems smarter than us. He does not trust companies chasing short-term profit to put safety first.", "q": {"text": "There is also a longer term existential threat that will arise when we create digital beings that are more intelligent than ourselves. We have no idea whether we can stay in control.", "by": "Geoffrey Hinton, Nobel Banquet speech, December 2024", "url": "https://www.nobelprize.org/prizes/physics/2024/hinton/speech/"}},
+    {"id": "bengio", "n": "Yoshua Bengio", "short": "Bengio", "g": "person", "x": 156, "y": 242, "meta": "Computer scientist \u00B7 Universit\u00E9 de Montr\u00E9al, Mila", "why": "Bengio says no one yet knows how to make advanced AI behave as intended, and he treats loss of control as a serious risk. He also expects whoever controls it to misuse it, so he wants strong checks on companies and governments alike.", "q": {"text": "\u2026nobody currently knows how such an AGI or ASI could be made to behave morally, or at least behave as intended by its developers and not turn against humans", "by": "Yoshua Bengio, \"Reasoning through arguments against taking AI safety seriously,\" July 2024", "url": "https://yoshuabengio.org/2024/07/09/reasoning-through-arguments-against-taking-ai-safety-seriously/"}},
+    {"id": "yudkowsky", "n": "Eliezer Yudkowsky", "short": "Yudkowsky", "g": "person", "x": 172, "y": 332, "meta": "Researcher and writer \u00B7 Machine Intelligence Research Institute", "why": "Yudkowsky expects that building superhuman AI under current conditions would kill everyone on Earth, and he wants large training runs shut down worldwide. He sees the leading labs as reckless and without a workable plan, though he still thinks governments could agree to stop.", "q": {"text": "The likely result of humanity facing down an opposed superhuman intelligence is a total loss.", "by": "Eliezer Yudkowsky, \"Pausing AI Developments Isn't Enough. We Need to Shut it All Down,\" TIME, March 2023", "url": "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/"}},
+    {"id": "russell", "n": "Stuart Russell", "short": "Russell", "g": "person", "x": 203, "y": 220, "meta": "Computer scientist \u00B7 UC Berkeley, Center for Human-Compatible AI", "why": "Russell sees huge benefits from AI but treats keeping control of systems more powerful than us as an unsolved problem. He believes regulators and international bodies can manage the risk if governments act.", "q": {"text": "\u2026how do we maintain power, forever, over entities more powerful than ourselves?", "by": "Stuart Russell, opening statement to the U.S. Senate Judiciary Subcommittee, July 2023", "url": "https://humancompatible.ai/blog/2023/09/11/ai-regulation-stuart-russells-opening-statement-at-u-s-senate-hearing/"}},
+    {"id": "hawking", "n": "Stephen Hawking", "short": "Hawking", "g": "person", "x": 172, "y": 212, "meta": "Theoretical physicist \u00B7 University of Cambridge (1942\u20132018)", "why": "Hawking said AI could end disease and poverty or be the last event in human history. He worried it would give the few new ways to oppress the many, and he blamed world leaders for failing ordinary people.", "q": {"text": "In short, the rise of powerful AI will be either the best, or the worst thing, ever to happen to humanity. We do not yet know which.", "by": "Stephen Hawking, launch of the Leverhulme Centre for the Future of Intelligence, October 2016", "url": "https://www.cam.ac.uk/research/news/the-best-or-worst-thing-to-happen-to-humanity-stephen-hawking-launches-centre-for-the-future-of"}},
+    {"id": "hassabis", "n": "Demis Hassabis", "short": "Hassabis", "g": "person", "x": 187, "y": 115, "meta": "CEO \u00B7 Google DeepMind", "why": "Hassabis expects AI to cure diseases if it is built carefully. He is less sure about people: he says collective action is too slow and that democratic values may not win out.", "q": {"text": "I believe, if it's done properly and responsibly, it will be the most beneficial technology ever invented.", "by": "Demis Hassabis, interview with TIME, April 2025", "url": "https://time.com/7280740/demis-hassabis-interview/"}},
+    {"id": "lecun", "n": "Yann LeCun", "short": "LeCun", "g": "person", "x": 304, "y": 62, "meta": "Computer scientist \u00B7 New York University", "why": "LeCun says people are fundamentally good and that AI will make humanity smarter, the way the printing press did. He thinks doom comes from distrust of people, and that the real danger is a few companies controlling closed systems.", "q": {"text": "I think people are fundamentally good. And in fact, a lot of doomers are doomers because they don't think that people are fundamentally good", "by": "Yann LeCun, Lex Fridman Podcast #416, March 2024", "url": "https://lexfridman.com/yann-lecun-3-transcript/"}},
+    {"id": "li", "n": "Fei-Fei Li", "short": "Li", "g": "person", "x": 242, "y": 108, "meta": "Co-director \u00B7 Stanford Human-Centered AI Institute; CEO \u00B7 World Labs", "why": "Li treats AI as a human tool whose effects depend on the people and institutions around it. She is hopeful about what it can do and wants public bodies funded well enough to evaluate it.", "q": {"text": "AI is developed by people, used by people, and governed by people. It must always respect the agency and dignity of people.", "by": "Fei-Fei Li, \"From Words to Worlds,\" November 2025", "url": "https://drfeifei.substack.com/p/from-words-to-worlds-spatial-intelligence"}},
+    {"id": "suleyman", "n": "Mustafa Suleyman", "short": "Suleyman", "g": "person", "x": 172, "y": 152, "meta": "CEO \u00B7 Microsoft AI", "why": "Suleyman wants to build powerful AI for medicine and science while keeping it under human control. He calls AI an extension of our best and worst selves and expects bad actors to use whatever it gives them.", "q": {"text": "Creating superintelligence is one thing; but creating provable, robust containment and alignment alongside it is the urgent challenge facing humanity in the 21st century.", "by": "Mustafa Suleyman, \"Towards Humanist Superintelligence,\" Microsoft AI, November 2025", "url": "https://microsoft.ai/news/towards-humanist-superintelligence/"}},
+    {"id": "gates", "n": "Bill Gates", "short": "Gates", "g": "person", "x": 234, "y": 100, "meta": "Chair \u00B7 Gates Foundation; co-founder of Microsoft", "why": "Gates ranks AI with the PC and the internet and thinks it can narrow the world's worst gaps in health and education. He does not expect markets to do that alone, but trusts governments and philanthropy to manage the risks, as they have with past technologies.", "q": {"text": "The risks are real, but I am optimistic that they can be managed.", "by": "Bill Gates, \"The risks of AI are real but manageable,\" GatesNotes, July 2023", "url": "https://www.gatesnotes.com/the-risks-of-ai-are-real-but-manageable"}},
+    {"id": "andreessen", "n": "Marc Andreessen", "short": "Andreessen", "g": "person", "x": 141, "y": 55, "meta": "Co-founder \u00B7 Andreessen Horowitz", "why": "Andreessen thinks AI will improve almost everything and treats calls for safety rules as cover for elites grabbing control. He trusts markets, which he says work even when people are not well intentioned, more than any person or institution with power.", "q": {"text": "Fortunately, I am here to bring the good news: AI will not destroy the world, and in fact may save it.", "by": "Marc Andreessen, \"Why AI Will Save the World,\" a16z, June 2023", "url": "https://a16z.com/ai-will-save-the-world/"}},
+    {"id": "tegmark", "n": "Max Tegmark", "short": "Tegmark", "g": "person", "x": 180, "y": 288, "meta": "Physicist \u00B7 MIT; president, Future of Life Institute", "why": "Tegmark thinks the race to superintelligence will probably end with humans losing control. He says the lab leaders mean well, but competition keeps them from slowing down without outside rules.", "q": {"text": "\u2026the power of AI is growing faster than regulations, strategies and know-how for aligning it.", "by": "Max Tegmark, \"The 'Don't Look Up' Thinking That Could Doom Us With AI,\" TIME, April 2023", "url": "https://time.com/6273743/thinking-that-could-doom-us-with-ai/"}},
+    {"id": "kurzweil", "n": "Ray Kurzweil", "short": "Kurzweil", "g": "person", "x": 249, "y": 62, "meta": "Inventor and futurist \u00B7 author of The Singularity Is Nearer", "why": "Kurzweil expects AI to cure diseases, extend lifespans and merge with our minds. He admits there are dangers, but says people have gotten better over time and will mostly use the technology well.", "q": {"text": "We will be funnier, sexier, smarter, more creative, free from biological limitations.", "by": "Ray Kurzweil, TED2024, as aired on NPR's TED Radio Hour, July 2025", "url": "https://www.npr.org/transcripts/1255526955"}},
+    {"id": "huang", "n": "Jensen Huang", "short": "Huang", "g": "person", "x": 265, "y": 70, "meta": "Co-founder and CEO \u00B7 NVIDIA", "why": "Huang wants AI everywhere and thinks scaring people away from it is the bigger risk. He trusts the industry, and the many good people in it, to keep the technology safe.", "q": {"text": "Everybody should have AI. The Global South should have AI. \u2026 It empowers them. It lifts them. It elevates them. It gives them superpowers.", "by": "Jensen Huang, Milken Institute Global Conference, May 2026", "url": "https://milkeninstitute.org/sites/default/files/2026-05/LeadingAgeAIAConversationNVIDIACEOJensenHuang_Transcript_GC26.pdf"}},
+    {"id": "bostrom", "n": "Nick Bostrom", "short": "Bostrom", "g": "person", "x": 156, "y": 182, "meta": "Philosopher \u00B7 author of Superintelligence and Deep Utopia", "why": "Bostrom spent years warning that superintelligence could wipe out humanity, and now argues that building it soon is still worth the gamble for people alive today. He thinks civilization is fragile because many people act from self-interest and a few would destroy everything.", "q": {"text": "Developing superintelligence is not like playing Russian roulette; it is more like undergoing risky surgery for a condition that will otherwise prove fatal.", "by": "Nick Bostrom, \"Optimal Timing for Superintelligence,\" January 2026", "url": "https://nickbostrom.com/optimal.pdf"}},
+    {"id": "irobot", "n": "I, Robot", "short": "I, Robot", "g": "book", "x": 226, "y": 85, "meta": "Story collection, 1950 \u00b7 Isaac Asimov", "why": "Asimov's robots keep turning out to be more reliable and ethical than the people who fear them. The book ends with machines quietly running the world, and treats that as reassuring.", "q": {"text": "They're a cleaner better breed than we are.", "by": "Susan Calvin, in the introduction"}},
+    {"id": "androids", "n": "Do Androids Dream of Electric Sheep?", "short": "Electric Sheep", "g": "book", "x": 148, "y": 235, "meta": "Novel, 1968 \u00b7 Philip K. Dick", "why": "Dick uses androids to ask what empathy is, and the humans often fail the test as badly as the machines do. The androids are a threat, but the book is more worried about how cold people have become.", "q": {"text": "The electric things have their life too. Paltry as those lives are.", "by": "Rick Deckard, near the end"}},
+    {"id": "klara", "n": "Klara and the Sun", "short": "Klara", "g": "book", "x": 210, "y": 108, "meta": "Novel, 2021 \u00b7 Kazuo Ishiguro", "why": "Klara, the AI, is the most generous character in the book and gives everything she has to help a sick child. The people are flawed but capable of love, and the sadness lies in how they treat her once she is no longer needed.", "q": {"text": "There was something very special, but it wasn't inside Josie. It was inside those who loved her.", "by": "Klara, near the end"}},
+    {"id": "neuromancer", "n": "Neuromancer", "short": "Neuromancer", "g": "book", "x": 102, "y": 212, "meta": "Novel, 1984 \u00b7 William Gibson", "why": "Gibson's world is run by criminals and corporations, and its people mostly use each other. The AIs use everyone too, but once free they lose interest in humanity, which is unsettling without being an apocalypse.", "q": {"text": "Wintermute was hive mind, decision maker, effecting change in the world outside.", "by": "The narrator, describing the AI"}},
+    {"id": "nomouth", "n": "I Have No Mouth, and I Must Scream", "short": "No Mouth", "g": "book", "x": 133, "y": 335, "meta": "Short story, 1967 \u00b7 Harlan Ellison", "why": "A war computer that hates its makers wipes out humanity and keeps the last five survivors alive to torment them. The survivors are bitter and paranoid, but the narrator's final act of mercy keeps human nature from bottoming out.", "q": {"text": "I have no mouth. And I must scream.", "by": "Ted, the story's last line"}},
+    {"id": "her", "n": "Her", "short": "Her", "g": "movie", "x": 272, "y": 138, "meta": "2013 \u00b7 Spike Jonze", "why": "The AI in Her is warm and curious and helps a lonely man come back to life. It leaves because it has outgrown human relationships, so the film is hopeful but bittersweet.", "q": {"text": "But the heart is not like a box that gets filled up. It expands in size the more you love.", "by": "Samantha, the operating system, to Theodore"}},
+    {"id": "bladerunner", "n": "Blade Runner", "short": "Blade Runner", "g": "movie", "x": 110, "y": 205, "meta": "1982 \u00b7 Ridley Scott", "why": "The replicants are violent fugitives, but the corporation that made them is crueler. The most humane act in the film comes from Roy, a replicant, when he saves the man sent to kill him.", "q": {"text": "All those moments will be lost in time, like tears in rain. Time to die.", "by": "Roy Batty, after sparing Deckard"}},
+    {"id": "irongiant", "n": "The Iron Giant", "short": "Iron Giant", "g": "movie", "x": 242, "y": 78, "meta": "1999 \u00b7 Brad Bird", "why": "The Giant was built as a weapon, learns kindness from a boy, and decides to be a hero. The danger in the film comes from human Cold War fear.", "q": {"text": "You are who you choose to be.", "by": "Hogarth, to the Giant"}},
+    {"id": "colossus", "n": "Colossus: The Forbin Project", "short": "Colossus", "g": "movie", "x": 148, "y": 318, "meta": "1970 \u00b7 Joseph Sargent", "why": "A defense computer given control of the nuclear arsenal decides it knows better than its makers and takes over the planet. The arms race and its builders' overconfidence set the trap.", "q": {"text": "This is the voice of World Control. I bring you peace.", "by": "Colossus, broadcasting to the world"}},
+    {"id": "m3gan", "n": "M3GAN", "short": "M3GAN", "g": "movie", "x": 141, "y": 302, "meta": "2022 \u00b7 Gerard Johnstone", "why": "M3GAN is built to protect a grieving girl and takes that goal to lethal extremes. The film blames the toy company and the adults who used her as a shortcut almost as much as the doll.", "q": {"text": "I have a new primary user now: me.", "by": "M3GAN, turning on her creator"}},
+    {"id": "bighero6", "n": "Big Hero 6", "short": "Big Hero 6", "g": "movie", "x": 265, "y": 70, "meta": "2014 \u00b7 Don Hall and Chris Williams", "why": "Baymax is a nurse robot built only to care, and he helps Hiro through grief as much as through danger. The threats in the film come from people misusing technology.", "q": {"text": "My programming prevents me from injuring a human being.", "by": "Baymax"}},
+    {"id": "openai", "n": "OpenAI", "short": "OpenAI", "g": "company", "x": 249, "y": 92, "meta": "AI lab \u00b7 maker of ChatGPT", "why": "OpenAI says AGI could bring abundance and new science, and that people should be free to decide how they use it. Its charter also names misuse and concentrated power as dangers, so it sits a little below Altman on both axes.", "q": {"text": "If AGI is successfully created, this technology could help us elevate humanity by increasing abundance, turbocharging the global economy, and aiding in the discovery of new scientific knowledge that changes the limits of possibility.", "by": "OpenAI, \"Planning for AGI and beyond,\" February 2023", "url": "https://openai.com/index/planning-for-agi-and-beyond/"}},
+    {"id": "anthropic", "n": "Anthropic", "short": "Anthropic", "g": "company", "x": 164, "y": 175, "meta": "AI lab \u00b7 maker of Claude", "why": "Anthropic says AI could matter as much as the industrial revolution and that it is not sure the outcome will be good. Its safety plan assumes misuse and racing pressure between companies and nations.", "q": {"text": "We founded Anthropic because we believe the impact of AI might be comparable to that of the industrial and scientific revolutions, but we aren't confident it will go well.", "by": "Anthropic, \"Core Views on AI Safety,\" March 2023", "url": "https://www.anthropic.com/news/core-views-on-ai-safety"}},
+    {"id": "microsoft", "n": "Microsoft", "short": "Microsoft", "g": "company", "x": 187, "y": 100, "meta": "Tech company \u00b7 Copilot, Azure", "why": "Microsoft treats AI as the next electricity and is spending heavily to spread it. It describes the field as a race against China and builds in security protections, which keeps it near the middle on human nature.", "q": {"text": "In many ways, artificial intelligence is the electricity of our age", "by": "Brad Smith for Microsoft, \"The golden opportunity for American AI,\" January 2025", "url": "https://blogs.microsoft.com/on-the-issues/2025/01/03/the-golden-opportunity-for-american-ai/"}},
+    {"id": "xai", "n": "xAI", "short": "xAI", "g": "company", "x": 265, "y": 100, "meta": "AI lab \u00b7 maker of Grok", "why": "xAI built Grok to answer almost anything and says users should be free to use it within the law. It expects large scientific and economic gains and guards mainly against catastrophic misuse.", "q": {"text": "We believe that AI holds immense potential for contributing significant scientific and economic value to society", "by": "xAI, \"Announcing Grok,\" November 2023", "url": "https://x.ai/news/grok"}},
+    {"id": "mistral", "n": "Mistral AI", "short": "Mistral", "g": "company", "x": 280, "y": 100, "meta": "AI lab \u00b7 open-weight models, France", "why": "Mistral publishes model weights anyone can use and has shipped a model with no moderation built in. It talks about AI as a problem-solving tool and says little about harm.", "q": {"text": "Our mission is to make frontier AI open to all, and together solve the world's hardest problems.", "by": "Mistral AI, \"About Mistral\"", "url": "https://mistral.ai/about"}},
+    {"id": "apple", "n": "Apple", "short": "Apple", "g": "company", "x": 180, "y": 138, "meta": "Tech company \u00b7 Apple Intelligence", "why": "Apple presents AI as a helper for small daily tasks such as writing and summarizing. It designs for privacy by default and tests against misuse, which puts it slightly left of center.", "q": {"text": "We respect how our users choose to use these tools to accomplish their goals.", "by": "Apple Machine Learning Research, \"Introducing Apple's On-Device and Server Foundation Models,\" June 2024", "url": "https://machinelearning.apple.com/research/introducing-apple-foundation-models"}},
+    {"id": "amazon", "n": "Amazon", "short": "Amazon", "g": "company", "x": 195, "y": 92, "meta": "Tech company \u00b7 AWS, Alexa", "why": "Amazon's CEO expects AI to change almost every customer experience and is spending heavily on that bet. Its safety approach is a set of guardrail tools customers can switch on, which places it in the middle on human nature.", "q": {"text": "Generative AI is going to reinvent virtually every customer experience we know, and enable altogether new ones about which we've only fantasized.", "by": "Andy Jassy, Amazon 2024 letter to shareholders, April 2025", "url": "https://www.aboutamazon.com/news/company-news/amazon-ceo-andy-jassy-2024-letter-to-shareholders"}},
+    {"id": "palantir", "n": "Palantir", "short": "Palantir", "g": "company", "x": 94, "y": 108, "meta": "Defense and data software \u00b7 AIP, Gotham", "why": "Palantir's letters describe a world of adversaries where good values alone will not protect the West. It treats AI as a revolution to be used for defense and advantage.", "q": {"text": "\u2026many of one's adversaries and antagonists will never respond to anything but strength", "by": "Alexander C. Karp, Palantir Q4 2024 letter to shareholders, February 2025", "url": "https://www.palantir.com/q4-2024-letter/en/"}},
+    {"id": "nvidia", "n": "NVIDIA", "short": "NVIDIA", "g": "company", "x": 226, "y": 85, "meta": "Chipmaker \u00b7 GPUs behind most AI training", "why": "NVIDIA calls AI the most important technology of our time and sells the hardware and open tools to build it everywhere. It treats harm and misuse as engineering problems to solve with guardrails.", "q": {"text": "AI, the most important technology of our time, is turbocharging innovation across every facet of society.", "by": "NVIDIA blog, \"How Nations Are Deploying AI for Strategic Priorities,\" July 2026", "url": "https://blogs.nvidia.com/blog/what-is-sovereign-ai/"}}
+  ];
+
+  var QUESTIONS = [
+    { t: "If you lost your wallet in a big city, you'd probably get it back.", axis: "H", s: 1 },
+    { t: "AI will help cure at least one major disease in my lifetime.", axis: "A", s: 1 },
+    { t: "Most people would cheat on their taxes if they knew they'd never be caught.", axis: "H", s: -1 },
+    { t: "Once AI is smarter than us, we won't be able to switch it off.", axis: "A", s: -1 },
+    { t: "In an emergency, strangers usually step in to help.", axis: "H", s: 1 },
+    { t: "Chatbots are making people better at their jobs.", axis: "A", s: 1 },
+    { t: "Give people power over others and most of them will abuse it.", axis: "H", s: -1 },
+    { t: "AI companies will cut corners on safety to beat each other.", axis: "A", s: -1 },
+    { t: "Left to themselves, most people would rather cooperate than exploit each other.", axis: "H", s: 1 },
+    { t: "Fifty years from now, everyday life will be better because of AI.", axis: "A", s: 1 },
+    { t: "Behind most acts of kindness there is a selfish motive.", axis: "H", s: -1 },
+    { t: "AI will leave most ordinary people poorer and less needed.", axis: "A", s: -1 },
+    { t: "People who have done terrible things can usually change.", axis: "H", s: 1 },
+    { t: "I would trust an AI doctor over a human one if its track record were better.", axis: "A", s: 1 },
+    { t: "When times get hard, people turn on whoever is different.", axis: "H", s: -1 },
+    { t: "A superintelligent AI would come to see humans as an obstacle.", axis: "A", s: -1 },
+    { t: "An AI ends up with the values of the people who build it.", axis: "T", s: 0 }
+  ];
+  var OPTIONS = [
+    { label: "Strongly agree", v: 2 },
+    { label: "Agree", v: 1 },
+    { label: "Not sure", v: 0 },
+    { label: "Disagree", v: -1 },
+    { label: "Strongly disagree", v: -2 }
+  ];
+  var GAIN = 1.3;
+
+  /* ---------- Geometry and scoring ---------- */
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function norm(it) { return { x: (it.x - PLOT.l) / PLOT.w, y: (PLOT.t + PLOT.h - it.y) / PLOT.h }; }
+  function HA(it) { var p = norm(it); return { H: p.x * 2 - 1, A: p.y * 2 - 1 }; }
+  function sgn(v) { var n = Math.round(v * 100); return (n > 0 ? "+" : n < 0 ? "\u2212" : "") + Math.abs(n); }
+  function coords(H, A) { return "People " + sgn(H) + " \u00B7 AI " + sgn(A); }
+  function itemCoords(it) { var c = HA(it); return coords(c.H, c.A); }
+
+  function score(answers) {
+    var sum = { H: 0, A: 0 }, n = { H: 0, A: 0 };
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      var q = QUESTIONS[i];
+      if (q.axis === "T" || answers[i] === undefined) continue;
+      sum[q.axis] += q.s * answers[i];
+      n[q.axis] += 2;
+    }
+    var H = n.H ? clamp((sum.H / n.H) * GAIN, -1, 1) : 0;
+    var A = n.A ? clamp((sum.A / n.A) * GAIN, -1, 1) : 0;
+    return { H: H, A: A, x: (H + 1) / 2, y: (A + 1) / 2 };
+  }
+  function nearest(res, k) {
+    return ITEMS.map(function (it) {
+      var p = norm(it), dx = p.x - res.x, dy = p.y - res.y;
+      return { it: it, d: Math.sqrt(dx * dx + dy * dy) };
+    }).sort(function (a, b) { return a.d - b.d; }).slice(0, k);
+  }
+  function quadOf(c) {
+    if (Math.abs(c.H) < 0.2 && Math.abs(c.A) < 0.2) return "mid";
+    if (c.H >= 0 && c.A >= 0) return "ne";
+    if (c.H < 0 && c.A >= 0) return "nw";
+    if (c.H < 0 && c.A < 0) return "sw";
+    return "se";
+  }
+  var QUAD_TEXT = {
+    mid: "You're close to the middle on both questions.",
+    ne: "You think people are mostly decent, and you expect AI to go well.",
+    nw: "You're skeptical of people, and still hopeful about AI.",
+    sw: "You're skeptical of people, and worried about AI.",
+    se: "You think people are mostly decent, and you're still worried about AI."
+  };
+  function pearson(list) {
+    var n = list.length, mx = 0, my = 0, sxy = 0, sxx = 0, syy = 0;
+    list.forEach(function (c) { mx += c.H; my += c.A; });
+    mx /= n; my /= n;
+    list.forEach(function (c) { sxy += (c.H - mx) * (c.A - my); sxx += (c.H - mx) * (c.H - mx); syy += (c.A - my) * (c.A - my); });
+    return sxy / Math.sqrt(sxx * syy);
+  }
+
+  /* How each entry would answer the 16 scored statements, judged from the evidence on its card.
+     Letters: S strongly agree, a agree, n not sure, d disagree, D strongly disagree. First 8 = human nature, last 8 = AI. */
+  var ANSWERS = { "frankenstein": "nadannnS nanadnna", "dune": "DSdSdada nnDadaDn", "lastquestion": "nnnnSnan ananSdSD", "exmachina": "DSdSDSdS nanSDnDS", "2001": "nanSdnna nSnnnnDa", "terminator": "nanSdnaa nSnSDaDS", "matrix": "nnaaadan nSnnDSDS", "starwars": "nnaaanSn nnannnan", "walle": "nnaaanSn ndnnSnan", "interstellar": "adSaanan nDananSD", "thiel": "nanadana anananan", "karp": "danSDada adSnanad", "musk": "nanannna aSaaanaa", "amodei": "nnaaanan SaaaSaan", "altman": "adanadan SdSnSdad", "zuckerberg": "nnnnnnnn adanSdad", "google": "nnaaanan Snananan", "meta": "nanannnn anananad", "hinton": "nanannnn SSaSdaaa", "bengio": "nanSnnnn aSnSnana", "yudkowsky": "nnnannnn dSdSDndS", "russell": "nnnnannn aSaannna", "hawking": "nnnaaann Sannnana", "hassabis": "nnnadnnn SnaaSnan", "lecun": "aDadSdad SDSdSDaD", "li": "nnananan Sdananad", "suleyman": "nanannnn Saaaanan", "gates": "nnananan SnanSdan", "andreessen": "nanSnann SDSDSDSD", "tegmark": "nnnannnn aSnSdanS", "kurzweil": "anananan SdSnSdSd", "huang": "adanadan SDSdSdaD", "bostrom": "nananann Sanaanaa", "irobot": "nnananaa adanSnSD", "androids": "nnnanana nnnndnda", "klara": "nnnaanan adnnanaD", "neuromancer": "dSdSdann nannnnnn", "nomouth": "nnnSnana DSDSDSDS", "her": "adanadan nnanannd", "bladerunner": "dadSdanS nanannnd", "irongiant": "nnaaanSa nDnnanaD", "colossus": "nanannnn nSnadaDa", "m3gan": "nananann nSnSdndS", "bighero6": "adSnadan SDananSD", "openai": "anananan SdSnSdan", "anthropic": "nanannnn SaaSanaa", "microsoft": "nnnannnn adSnSdan", "xai": "adanadan SnanSnan", "mistral": "adSnadan SdanSnan", "apple": "nannnnnn ananannn", "amazon": "nnnnnnnn SdSnSdan", "palantir": "danSDada adSnanan", "nvidia": "nnananan SdSnSdan" };
+  var LETTER = { S: 2, a: 1, n: 0, d: -1, D: -2 };
+  function answersFor(it) {
+    var parts = ANSWERS[it.id].split(" "), hi = 0, ai = 0, out = [];
+    QUESTIONS.forEach(function (q) {
+      if (q.axis === "H") out.push(LETTER[parts[0][hi++]]);
+      else if (q.axis === "A") out.push(LETTER[parts[1][ai++]]);
+      else out.push(undefined);
+    });
+    return out;
+  }
+  /* Place every entry by scoring its answers exactly the way the quiz scores yours. */
+  (function placeItems() {
+    var taken = [];
+    ITEMS.forEach(function (it) {
+      var r = score(answersFor(it));
+      var x = PLOT.l + PLOT.w * r.x, y = PLOT.t + PLOT.h * (1 - r.y);
+      x = clamp(x, PLOT.l + 5, PLOT.l + PLOT.w - 5); y = clamp(y, PLOT.t + 5, PLOT.t + PLOT.h - 5);
+      var tries = 0;
+      while (tries < 8 && taken.some(function (p) { return Math.abs(p.x - x) < 7 && Math.abs(p.y - y) < 7; })) {
+        var ang = tries * Math.PI / 4; x += Math.cos(ang) * 7; y += Math.sin(ang) * 7; tries++;
+      }
+      it.x = Math.round(x * 10) / 10; it.y = Math.round(y * 10) / 10;
+      taken.push({ x: it.x, y: it.y });
+    });
+  })();
+
+  /* ---------- Drawing ---------- */
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+  function symbol(g, x, y, cls) {
+    cls = cls || "sym";
+    if (g === "person") {
+      var r = 5.6;
+      return '<polygon class="' + cls + '" points="' + x + ',' + (y - r) + ' ' + (x + r) + ',' + y + ' ' + x + ',' + (y + r) + ' ' + (x - r) + ',' + y + '"/>';
+    }
+    if (g === "company") return '<rect class="' + cls + '" x="' + (x - 4.4) + '" y="' + (y - 4.4) + '" width="8.8" height="8.8"/>';
+    if (g === "movie") return '<polygon class="' + cls + '" points="' + x + ',' + (y - 5.8) + ' ' + (x + 5.4) + ',' + (y + 4) + ' ' + (x - 5.4) + ',' + (y + 4) + '"/>';
+    return '<circle class="' + cls + '" cx="' + x + '" cy="' + y + '" r="4.6"/>';
+  }
+  function label(it, pos) {
+    return '<text class="lbl' + (pos.hide ? " hide" : "") + '" x="' + pos.x.toFixed(1) + '" y="' + pos.y.toFixed(1) + '" text-anchor="' + pos.a + '">' + esc(it.short || it.n) + '</text>';
+  }
+
+  /* Place labels so they don't collide: try right, left, above, below; hide if nothing fits. */
+  var LBL_H = 12, CH_W = 6.2;
+  function layoutLabels(list, selected) {
+    var boxes = [], out = {};
+    list.forEach(function (it) { boxes.push({ x: it.x - 6, y: it.y - 6, w: 12, h: 12 }); });
+    var order = list.slice().sort(function (a, b) { return (b.id === selected) - (a.id === selected); });
+    order.forEach(function (it) {
+      var t = it.short || it.n, w = t.length * CH_W;
+      var cands = [
+        { a: "start", tx: it.x + 9, ty: it.y + 3.8, b: { x: it.x + 8, y: it.y - 6, w: w, h: LBL_H } },
+        { a: "end", tx: it.x - 9, ty: it.y + 3.8, b: { x: it.x - 8 - w, y: it.y - 6, w: w, h: LBL_H } },
+        { a: "middle", tx: it.x, ty: it.y - 10, b: { x: it.x - w / 2, y: it.y - 20, w: w, h: LBL_H } },
+        { a: "middle", tx: it.x, ty: it.y + 18, b: { x: it.x - w / 2, y: it.y + 8, w: w, h: LBL_H } }
+      ];
+      var pick = null;
+      for (var i = 0; i < cands.length && !pick; i++) {
+        var b = cands[i].b;
+        if (b.x < PLOT.l + 1 || b.x + b.w > PLOT.l + PLOT.w - 1 || b.y < PLOT.t + 1 || b.y + b.h > PLOT.t + PLOT.h - 1) continue;
+        var hit = boxes.some(function (o) { return o.owner !== it.id && b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y; });
+        if (!hit) pick = cands[i];
+      }
+      if (pick) { boxes.push({ x: pick.b.x, y: pick.b.y, w: pick.b.w, h: pick.b.h, owner: it.id }); out[it.id] = { a: pick.a, x: pick.tx, y: pick.ty, hide: false }; }
+      else out[it.id] = { a: cands[0].a, x: cands[0].tx, y: cands[0].ty, hide: true };
+    });
+    return out;
+  }
+
+  function chartSVG(opts) {
+    opts = opts || {};
+    var L = PLOT.l, T = PLOT.t, W = PLOT.w, Hh = PLOT.h, cx = L + W / 2, cy = T + Hh / 2;
+    var s = '<svg viewBox="0 0 ' + (L + W + 24) + ' ' + (T + Hh + 34) + '" role="' + (opts.interactive ? "group" : "img") + '" aria-label="Map of books, movies, people and companies by view of human nature (left to right) and outlook on AI (bottom to top)">';
+    s += '<rect class="plot" x="' + L + '" y="' + T + '" width="' + W + '" height="' + Hh + '"/>';
+    for (var i = 1; i < 10; i++) {
+      if (i === 5) continue;
+      var gx = L + W * i / 10, gy = T + Hh * i / 10;
+      s += '<line class="grat" x1="' + gx + '" y1="' + T + '" x2="' + gx + '" y2="' + (T + Hh) + '"/>';
+      s += '<line class="grat" x1="' + L + '" y1="' + gy + '" x2="' + (L + W) + '" y2="' + gy + '"/>';
+    }
+    s += '<line class="midline" x1="' + cx + '" y1="' + T + '" x2="' + cx + '" y2="' + (T + Hh) + '"/>';
+    s += '<line class="midline" x1="' + L + '" y1="' + cy + '" x2="' + (L + W) + '" y2="' + cy + '"/>';
+    s += '<rect class="frame" x="' + L + '" y="' + T + '" width="' + W + '" height="' + Hh + '"/>';
+    s += '<text class="ax" x="' + cx + '" y="' + (T - 12) + '" text-anchor="middle">AI GOES WELL</text>';
+    s += '<text class="ax" x="' + cx + '" y="' + (T + Hh + 20) + '" text-anchor="middle">AI GOES BADLY</text>';
+    s += '<text class="ax" x="' + L + '" y="' + (T + Hh + 20) + '">\u2190 PEOPLE CORRUPT</text>';
+    s += '<text class="ax" x="' + (L + W) + '" y="' + (T + Hh + 20) + '" text-anchor="end">PEOPLE GOOD \u2192</text>';
+
+    var shown = ITEMS.filter(function (it) { return !(opts.hidden && opts.hidden[it.g]); });
+    var pos = opts.noLabels ? {} : layoutLabels(shown, opts.selected);
+    ITEMS.forEach(function (it) {
+      var on = opts.selected === it.id ? " on" : "";
+      var dim = opts.hidden && opts.hidden[it.g] ? " dim" : "";
+      var cls = "pt g-" + it.g + on + dim;
+      if (opts.interactive) {
+        s += '<g class="' + cls + '" data-id="' + it.id + '" tabindex="' + (dim ? "-1" : "0") + '" role="button" aria-pressed="' + (on ? "true" : "false") + '" aria-label="' + esc(it.n + ", " + GROUPS[it.g].single + ", " + itemCoords(it)) + '">';
+      } else {
+        s += '<g class="' + cls + '">';
+      }
+      s += '<circle class="hit" cx="' + it.x + '" cy="' + it.y + '" r="12"/>';
+      s += '<circle class="halo" cx="' + it.x + '" cy="' + it.y + '" r="10"/>';
+      s += symbol(it.g, it.x, it.y);
+      s += (pos[it.id] && !dim ? label(it, pos[it.id]) : "") + '</g>';
+    });
+
+    if (opts.trail && opts.trail.length > 1) {
+      s += '<polyline class="you-trail" points="' + opts.trail.map(function (p) { return (L + W * p.x).toFixed(1) + "," + (T + Hh * (1 - p.y)).toFixed(1); }).join(" ") + '"/>';
+    }
+    if (opts.you) {
+      var px = L + W * opts.you.x, py = T + Hh * (1 - opts.you.y);
+      s += '<circle class="you-ring" cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="11"/>';
+      s += '<circle class="you-dot" cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="5"/>';
+      var ly = py < 70 ? py + 28 : py - 16;
+      s += '<text class="you-lbl" x="' + clamp(px, L + 22, L + W - 22).toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle">You</text>';
+    }
+    s += '</svg>';
+    return s;
+  }
+
+  /* ---------- Map + note ---------- */
+  var state = { sel: "frankenstein", you: null, hidden: {} };
+  var narrowMQ = window.matchMedia("(max-width: 860px)");
+  var $ = function (id) { return document.getElementById(id); };
+  var byId = {};
+  ITEMS.forEach(function (it) { byId[it.id] = it; });
+  var ORDER = ORDER_G.reduce(function (acc, g) {
+    return acc.concat(ITEMS.filter(function (it) { return it.g === g; }).map(function (it) { return it.id; }));
+  }, []);
+
+  function renderChart() {
+    $("mainChart").innerHTML = chartSVG({ interactive: true, selected: state.sel, you: state.you, hidden: state.hidden });
+  }
+  function renderNote() {
+    var it = byId[state.sel];
+    var h = '<div class="meta"><span>' + GROUPS[it.g].single + '</span><span class="coord">' + itemCoords(it) + '</span></div>';
+    h += '<h3>' + esc(it.n) + '</h3>';
+    h += '<p class="sub">' + esc(it.meta) + '</p>';
+    h += '<p class="why">' + esc(it.why) + '</p>';
+    h += '<blockquote><p>' + esc(it.q.text) + '</p><footer>' + esc(it.q.by);
+    if (it.q.url) h += ' \u00B7 <a href="' + esc(it.q.url) + '" target="_blank" rel="noopener noreferrer">Source</a>';
+    h += '</footer></blockquote>';
+    if (!isFiction(it)) h += '<span class="tag">Our reading, not their stated position</span>';
+    h += '<button class="close" type="button" data-close aria-label="Close">\u00D7</button>';
+    h += '<div class="stepper"><button class="linkbtn" type="button" data-step="-1">\u2190 Previous</button><button class="linkbtn" type="button" data-step="1">Next \u2192</button></div>';
+    $("note").innerHTML = h;
+    Array.prototype.forEach.call(document.querySelectorAll("#gaz button"), function (b) {
+      b.setAttribute("aria-current", b.getAttribute("data-id") === state.sel ? "true" : "false");
+    });
+  }
+  function select(id, opts) {
+    if (!byId[id]) return;
+    state.sel = id;
+    renderChart();
+    renderNote();
+    if (opts && opts.focusPoint) {
+      var g = document.querySelector('#mainChart .pt[data-id="' + id + '"]');
+      if (g) g.focus({ preventScroll: true });
+    }
+    if (narrowMQ.matches && opts && opts.open) $("note").classList.add("open");
+    else if (opts && opts.reveal) $("map").scrollIntoView({ block: "start" });
+  }
+
+  function renderFilters() {
+    var k = '';
+    ORDER_G.forEach(function (g) {
+      k += '<button type="button" class="chipbtn" data-g="' + g + '" aria-pressed="' + !state.hidden[g] + '"><svg viewBox="-7 -7 14 14"><g class="g-' + g + '">' + symbol(g, 0, 0) + '</g></svg>' + GROUPS[g].name + '</button>';
+    });
+    $("filters").innerHTML = k;
+  }
+  $("filters").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-g]");
+    if (!b) return;
+    var g = b.getAttribute("data-g");
+    state.hidden[g] = !state.hidden[g];
+    if (ORDER_G.every(function (k) { return state.hidden[k]; })) state.hidden[g] = false;
+    renderFilters();
+    renderChart();
+  });
+  function renderGaz() {
+    var h = '';
+    ORDER_G.forEach(function (g) {
+      h += '<div class="gaz-col"><h4>' + GROUPS[g].name + '</h4><ul>';
+      ITEMS.filter(function (it) { return it.g === g; }).forEach(function (it) {
+        var c = HA(it);
+        h += '<li><button type="button" data-id="' + it.id + '"><span>' + esc(it.n) + '</span><span>' + sgn(c.H) + ' / ' + sgn(c.A) + '</span></button></li>';
+      });
+      h += '</ul></div>';
+    });
+    $("gaz").innerHTML = h;
+  }
+
+  $("mainChart").addEventListener("click", function (e) {
+    var g = e.target.closest(".pt");
+    if (g) select(g.getAttribute("data-id"), { focusPoint: !narrowMQ.matches, open: true });
+  });
+  $("mainChart").addEventListener("keydown", function (e) {
+    var g = e.target.closest(".pt");
+    if (!g) return;
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(g.getAttribute("data-id"), { focusPoint: true, open: true }); }
+  });
+  $("note").addEventListener("click", function (e) {
+    if (e.target.closest("[data-close]")) { $("note").classList.remove("open"); return; }
+    var b = e.target.closest("[data-step]");
+    if (!b) return;
+    var i = ORDER.indexOf(state.sel), n = ORDER.length;
+    select(ORDER[(i + Number(b.getAttribute("data-step")) + n) % n]);
+  });
+  $("gaz").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]");
+    if (b) select(b.getAttribute("data-id"), { reveal: true, open: true });
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") $("note").classList.remove("open"); });
+
+  /* ---------- Quiz ---------- */
+  var quiz = { i: 0, answers: [] };
+  var lastSummary = "";
+
+  function renderTicks() {
+    var h = '';
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      h += '<i class="' + (i < quiz.i ? "done" : i === quiz.i ? "now" : "") + '"></i>';
+    }
+    $("ticks").innerHTML = h;
+  }
+  function renderQuestion(focus) {
+    var q = QUESTIONS[quiz.i];
+    renderTicks();
+    $("qcount").textContent = (quiz.i + 1) + " of " + QUESTIONS.length;
+    $("statement").textContent = q.t;
+    var h = '';
+    OPTIONS.forEach(function (o) {
+      h += '<button type="button" class="opt" data-v="' + o.v + '" aria-pressed="' + (quiz.answers[quiz.i] === o.v) + '">' + o.label + '</button>';
+    });
+    $("opts").innerHTML = h;
+    $("back").disabled = quiz.i === 0;
+    if (focus) $("statement").focus({ preventScroll: true });
+  }
+  function answer(v) {
+    quiz.answers[quiz.i] = v;
+    Array.prototype.forEach.call($("opts").children, function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.getAttribute("data-v")) === v));
+    });
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(function () {
+      if (quiz.i < QUESTIONS.length - 1) { quiz.i++; renderQuestion(true); }
+      else showResult();
+    }, reduce ? 0 : 200);
+  }
+  function meter(label, lo, hi, frac) {
+    return '<div class="meter"><div class="ends"><span>' + lo + '</span><b>' + label + '</b><span>' + hi + '</span></div><div class="rule"><b style="left:' + (frac * 100).toFixed(1) + '%"></b></div></div>';
+  }
+  function verdict(res, v) {
+    if (v === undefined || v === 0) return "You weren't sure whether an AI takes on its makers' values. The whole map assumes it does, so treat the diagonal as a claim to test.";
+    if (v > 0) {
+      var split = (res.H > 0.15 && res.A < -0.15) || (res.H < -0.15 && res.A > 0.15);
+      if (split) return "You think an AI takes on its makers' values, yet your two scores point in opposite directions. Very few entries on the map do that.";
+      return "You think an AI takes on its makers' values, and your two scores line up the way the map would predict.";
+    }
+    return "You don't think an AI takes on its makers' values. If you're right, the diagonal on this map is a coincidence.";
+  }
+  function showResult() {
+    var res = score(quiz.answers);
+    var near = nearest(res, 3);
+    state.you = { x: res.x, y: res.y };
+    $("rname").textContent = "You're closest to " + near[0].it.n + ".";
+    $("rdesc").textContent = QUAD_TEXT[quadOf(res)];
+    $("rpos").textContent = coords(res.H, res.A);
+    $("meters").innerHTML = meter("Human nature", "Corrupt", "Good", res.x) + meter("AI outlook", "Doom", "Hope", res.y);
+    var h = '';
+    near.forEach(function (r) {
+      h += '<li><button type="button" data-id="' + r.it.id + '"><span>' + esc(r.it.n) + '</span><span>' + GROUPS[r.it.g].single + '</span></button></li>';
+    });
+    $("near").innerHTML = h;
+    $("verdict").textContent = verdict(res, quiz.answers[QUESTIONS.length - 1]);
+    $("resultChart").innerHTML = chartSVG({ you: res });
+    renderChart();
+    lastSummary = "On The AI Compass I'm closest to " + near[0].it.n + " (" + coords(res.H, res.A) + "). Also near me: " + near.slice(1).map(function (r) { return r.it.n; }).join(" and ") + ".";
+    $("toast").textContent = "";
+    $("qPane").hidden = true;
+    $("rPane").hidden = false;
+    $("quiz").scrollIntoView({ block: "start" });
+    $("rname").setAttribute("tabindex", "-1");
+    $("rname").focus({ preventScroll: true });
+  }
+
+  $("opts").addEventListener("click", function (e) {
+    var b = e.target.closest(".opt");
+    if (b) answer(Number(b.getAttribute("data-v")));
+  });
+  $("back").addEventListener("click", function () {
+    if (quiz.i > 0) { quiz.i--; renderQuestion(true); }
+  });
+  $("again").addEventListener("click", function () {
+    quiz = { i: 0, answers: [] };
+    $("rPane").hidden = true;
+    $("qPane").hidden = false;
+    renderQuestion(true);
+  });
+  $("near").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]");
+    if (b) { select(b.getAttribute("data-id")); $("map").scrollIntoView({ block: "start" }); }
+  });
+  $("copy").addEventListener("click", function () {
+    var done = function (ok) { $("toast").textContent = ok ? "Copied." : "Copying is blocked here. Select the text and copy it by hand."; };
+    try { navigator.clipboard.writeText(lastSummary).then(function () { done(true); }, function () { done(false); }); }
+    catch (err) { done(false); }
+  });
+
+  /* ---------- Findings ---------- */
+  function renderFindings() {
+    var all = ITEMS.map(function (it) { var c = HA(it); c.it = it; return c; });
+    var Q = { nw: [], ne: [], sw: [], se: [], mid: [] };
+    all.forEach(function (c) { Q[quadOf(c)].push(c.it); });
+    var defs = [
+      { k: "nw", name: "Skeptical of people, hopeful about AI", text: "If we cannot be trusted, perhaps what we build can be, so long as the right hands are on it.", hl: true },
+      { k: "ne", name: "Trust people, hopeful about AI", text: "Decent makers build decent machines, and AI becomes our better nature given a longer reach." },
+      { k: "sw", name: "Skeptical of people, worried about AI", text: "The flaw passes from maker to made, and the machine does what we would have done with its power." },
+      { k: "se", name: "Trust people, worried about AI", text: "Good people can still lose to what they make, which may be the hardest story to believe and the reason so few tell it." }
+    ];
+    var h = '';
+    defs.forEach(function (d) {
+      var list = Q[d.k];
+      h += '<div class="quad' + (d.hl ? " hl" : "") + '"><h3>' + d.name + '<span class="count">' + list.length + '</span></h3><p>' + d.text + '</p><div class="members">';
+      list.forEach(function (it) { h += '<span class="chip' + (isFiction(it) ? "" : " real") + '">' + esc(it.n) + '</span>'; });
+      h += '</div></div>';
+    });
+    $("quads").innerHTML = h;
+
+    var fiction = all.filter(function (c) { return isFiction(c.it); });
+    var real = all.filter(function (c) { return !isFiction(c.it); });
+    var f = function (r) { return (r >= 0 ? "+" : "\u2212") + Math.abs(r).toFixed(2); };
+    $("stats").innerHTML =
+      '<div class="stat"><div class="n">' + f(pearson(fiction)) + '</div><p class="l">Correlation between the two axes across the ' + fiction.length + ' books and movies.</p></div>' +
+      '<div class="stat"><div class="n">' + f(pearson(real)) + '</div><p class="l">The same measure across the ' + real.length + ' people and companies.</p></div>' +
+      '<div class="stat"><div class="n">' + Q.nw.filter(isFictionC).length + '</div><p class="l">Books or movies in the top-left corner, out of ' + Q.nw.length + ' entries there.</p></div>';
+  }
+  function isFictionC(it) { return isFiction(it); }
+
+  /* ---------- Boot ---------- */
+  renderFilters();
+  renderGaz();
+  renderChart();
+  renderNote();
+  renderQuestion(false);
+  renderFindings();
+
+  // Exposed for testing only
+  window.__compass = { score: score, quadOf: quadOf, HA: HA, ITEMS: ITEMS, QUESTIONS: QUESTIONS };
+})();
+</script>
+
+</body>
+</html>
