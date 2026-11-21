@@ -264,10 +264,6 @@ svg .you-lbl { font: 600 12px var(--font-body); fill: var(--accent); paint-order
 .chip { font-size: 13.5px; padding: 3px 11px; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; }
 .chip.real { border-style: dashed; border-color: var(--muted); }
 .quad.hl { background: var(--accent-soft); }
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 44px 0 0; }
-.stat { border-top: 1px solid var(--ink); padding-top: 14px; }
-.stat .n { font-family: var(--font-display); font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
-.stat .l { font-size: 14.5px; color: var(--muted); margin-top: 10px; max-width: 30ch; }
 .finding { margin-top: 44px; }
 
 footer.colophon { border-top: 1px solid var(--line); background: var(--surface); padding-block: 40px 64px; font-size: 14px; color: var(--muted); }
@@ -292,7 +288,7 @@ footer.colophon p + p { margin-top: 10px; }
   body { font-size: 16px; }
   .hero { padding-block: 44px 40px; }
   section.block { padding-block: 48px; }
-  .axes, .quads, .stats, .gaz-cols { grid-template-columns: minmax(0, 1fr); }
+  .axes, .quads, .gaz-cols { grid-template-columns: minmax(0, 1fr); }
   .quad:nth-child(odd) { border-right: 0; }
   .quad:nth-child(3) { border-bottom: 1px solid var(--line); }
   .opts { grid-template-columns: minmax(0, 1fr); gap: 6px; }
@@ -425,7 +421,6 @@ footer.colophon p + p { margin-top: 10px; }
         </div>
       </div>
       <div class="quads" id="quads"></div>
-      <div class="stats" id="stats"></div>
     </div>
   </section>
 </main>
@@ -631,13 +626,6 @@ footer.colophon p + p { margin-top: 10px; }
     sw: "You're skeptical of people, and worried about AI.",
     se: "You think people are mostly decent, and you're still worried about AI."
   };
-  function pearson(list) {
-    var n = list.length, mx = 0, my = 0, sxy = 0, sxx = 0, syy = 0;
-    list.forEach(function (c) { mx += c.H; my += c.A; });
-    mx /= n; my /= n;
-    list.forEach(function (c) { sxy += (c.H - mx) * (c.A - my); sxx += (c.H - mx) * (c.H - mx); syy += (c.A - my) * (c.A - my); });
-    return sxy / Math.sqrt(sxx * syy);
-  }
 
   /* How each entry would answer the 16 scored statements, judged from the evidence on its card.
      Letters: S strongly agree, a agree, n not sure, d disagree, D strongly disagree. First 8 = human nature, last 8 = AI. */
@@ -970,16 +958,7 @@ footer.colophon p + p { margin-top: 10px; }
       h += '</div></div>';
     });
     $("quads").innerHTML = h;
-
-    var fiction = all.filter(function (c) { return isFiction(c.it); });
-    var real = all.filter(function (c) { return !isFiction(c.it); });
-    var f = function (r) { return (r >= 0 ? "+" : "\u2212") + Math.abs(r).toFixed(2); };
-    $("stats").innerHTML =
-      '<div class="stat"><div class="n">' + f(pearson(fiction)) + '</div><p class="l">Correlation between the two axes across the ' + fiction.length + ' books and movies.</p></div>' +
-      '<div class="stat"><div class="n">' + f(pearson(real)) + '</div><p class="l">The same measure across the ' + real.length + ' people and companies.</p></div>' +
-      '<div class="stat"><div class="n">' + Q.nw.filter(isFictionC).length + '</div><p class="l">Books or movies in the top-left corner, out of ' + Q.nw.length + ' entries there.</p></div>';
   }
-  function isFictionC(it) { return isFiction(it); }
 
   /* ---------- Boot ---------- */
   renderFilters();
