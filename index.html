@@ -19,44 +19,16 @@
   --line: #e3e6eb;
   --accent: #2346c8;
   --accent-soft: #edf1fc;
+  --heat: #e0442b;
   --c-book: #b0532c;
-  --c-movie: #7b4fb5;
+  --c-movie: #c0306a;
   --c-person: #18806a;
   --c-company: #9a7412;
   --font-display: 'Newsreader', 'Iowan Old Style', Georgia, serif;
   --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --measure: 64ch;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0e1116;
-    --surface: #151a21;
-    --ink: #e7eaf0;
-    --muted: #98a1b0;
-    --line: #262d38;
-    --accent: #8aa2ff;
-    --accent-soft: #1a2240;
-    --c-book: #e58a63;
-    --c-movie: #b393ec;
-    --c-person: #4cc3a6;
-    --c-company: #d6b24f;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0e1116;
-  --surface: #151a21;
-  --ink: #e7eaf0;
-  --muted: #98a1b0;
-  --line: #262d38;
-  --accent: #8aa2ff;
-  --accent-soft: #1a2240;
-  --c-book: #e58a63;
-  --c-movie: #b393ec;
-  --c-person: #4cc3a6;
-  --c-company: #d6b24f;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -252,6 +224,23 @@ svg .you-lbl { font: 600 12px var(--font-body); fill: var(--accent); paint-order
 .result-chart { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
 .result-chart svg { display: block; width: 100%; height: auto; }
 
+/* Crowd heat map */
+.crowd-grid { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.crowd-side { display: flex; flex-direction: column; gap: 14px; }
+.crowd-n { font-family: var(--font-display); font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
+.crowd-side .sub { color: var(--muted); font-size: 15px; }
+.crowd-quads { list-style: none; margin: 8px 0 0; padding: 0; }
+.crowd-quads li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.crowd-quads .qrow { display: flex; justify-content: space-between; gap: 12px; }
+.crowd-quads .pct { font-variant-numeric: tabular-nums; color: var(--muted); }
+.crowd-quads .track { height: 4px; border-radius: 2px; background: var(--line); margin-top: 8px; overflow: hidden; }
+.crowd-quads .track b { display: block; height: 100%; background: var(--heat); border-radius: 2px; }
+.heat-key { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.heat-key i { width: 96px; height: 8px; border-radius: 4px; background: linear-gradient(to right, color-mix(in srgb, var(--heat) 8%, var(--bg)), var(--heat)); }
+svg .heat { fill: var(--heat); }
+svg.crowd .pt .sym { opacity: 0.55; }
+.crowd-link { margin-top: 16px; font-size: 15px; }
+
 /* Findings */
 .quads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .quad { padding: 24px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
@@ -264,10 +253,6 @@ svg .you-lbl { font: 600 12px var(--font-body); fill: var(--accent); paint-order
 .chip { font-size: 13.5px; padding: 3px 11px; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; }
 .chip.real { border-style: dashed; border-color: var(--muted); }
 .quad.hl { background: var(--accent-soft); }
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 44px 0 0; }
-.stat { border-top: 1px solid var(--ink); padding-top: 14px; }
-.stat .n { font-family: var(--font-display); font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
-.stat .l { font-size: 14.5px; color: var(--muted); margin-top: 10px; max-width: 30ch; }
 .finding { margin-top: 44px; }
 
 footer.colophon { border-top: 1px solid var(--line); background: var(--surface); padding-block: 40px 64px; font-size: 14px; color: var(--muted); }
@@ -275,7 +260,7 @@ footer.colophon .wrap p { max-width: var(--measure); }
 footer.colophon p + p { margin-top: 10px; }
 
 @media (max-width: 860px) {
-  .chart-grid, .result, .qgrid, footer.colophon .wrap { grid-template-columns: minmax(0, 1fr); }
+  .chart-grid, .crowd-grid, .result, .qgrid, footer.colophon .wrap { grid-template-columns: minmax(0, 1fr); }
   .note {
     position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 20;
     max-height: 64vh; overflow-y: auto; border-radius: 14px 14px 0 0;
@@ -292,7 +277,7 @@ footer.colophon p + p { margin-top: 10px; }
   body { font-size: 16px; }
   .hero { padding-block: 44px 40px; }
   section.block { padding-block: 48px; }
-  .axes, .quads, .stats, .gaz-cols { grid-template-columns: minmax(0, 1fr); }
+  .axes, .quads, .gaz-cols { grid-template-columns: minmax(0, 1fr); }
   .quad:nth-child(odd) { border-right: 0; }
   .quad:nth-child(3) { border-bottom: 1px solid var(--line); }
   .opts { grid-template-columns: minmax(0, 1fr); gap: 6px; }
@@ -377,6 +362,7 @@ footer.colophon p + p { margin-top: 10px; }
               <p class="label near-h">Nearest on the map</p>
               <ul class="near" id="near"></ul>
               <div class="verdict" id="verdict"></div>
+              <p class="crowd-link" id="crowdLink" hidden><a href="#crowd">See where everyone else lands</a></p>
               <div class="ractions">
                 <button class="btn" id="copy" type="button">Copy my result</button>
                 <button class="btn ghost" id="again" type="button">Start over</button>
@@ -385,6 +371,24 @@ footer.colophon p + p { margin-top: 10px; }
             </div>
             <div class="result-chart" id="resultChart"></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="crowd" aria-labelledby="crowd-h" hidden>
+    <div class="wrap">
+      <div class="head">
+        <h2 id="crowd-h">Where everyone lands</h2>
+        <p>Each finished quiz adds one anonymous point to this map, and the hotter a patch, the more people landed there. Taking the quiz again moves your point instead of adding a second one.</p>
+      </div>
+      <div class="crowd-grid">
+        <div class="chart-sheet" id="crowdChart"></div>
+        <div class="crowd-side">
+          <p class="crowd-n" id="crowdN" aria-live="polite"></p>
+          <p class="sub" id="crowdSub"></p>
+          <div class="heat-key" aria-hidden="true"><span>Fewer</span><i></i><span>More</span></div>
+          <ul class="crowd-quads" id="crowdQuads"></ul>
         </div>
       </div>
     </div>
@@ -425,7 +429,6 @@ footer.colophon p + p { margin-top: 10px; }
         </div>
       </div>
       <div class="quads" id="quads"></div>
-      <div class="stats" id="stats"></div>
     </div>
   </section>
 </main>
@@ -631,13 +634,6 @@ footer.colophon p + p { margin-top: 10px; }
     sw: "You're skeptical of people, and worried about AI.",
     se: "You think people are mostly decent, and you're still worried about AI."
   };
-  function pearson(list) {
-    var n = list.length, mx = 0, my = 0, sxy = 0, sxx = 0, syy = 0;
-    list.forEach(function (c) { mx += c.H; my += c.A; });
-    mx /= n; my /= n;
-    list.forEach(function (c) { sxy += (c.H - mx) * (c.A - my); sxx += (c.H - mx) * (c.H - mx); syy += (c.A - my) * (c.A - my); });
-    return sxy / Math.sqrt(sxx * syy);
-  }
 
   /* How each entry would answer the 16 scored statements, judged from the evidence on its card.
      Letters: S strongly agree, a agree, n not sure, d disagree, D strongly disagree. First 8 = human nature, last 8 = AI. */
@@ -715,7 +711,7 @@ footer.colophon p + p { margin-top: 10px; }
   function chartSVG(opts) {
     opts = opts || {};
     var L = PLOT.l, T = PLOT.t, W = PLOT.w, Hh = PLOT.h, cx = L + W / 2, cy = T + Hh / 2;
-    var s = '<svg viewBox="0 0 ' + (L + W + 24) + ' ' + (T + Hh + 34) + '" role="' + (opts.interactive ? "group" : "img") + '" aria-label="Map of books, movies, people and companies by view of human nature (left to right) and outlook on AI (bottom to top)">';
+    var s = '<svg' + (opts.heat ? ' class="crowd"' : '') + ' viewBox="0 0 ' + (L + W + 24) + ' ' + (T + Hh + 34) + '" role="' + (opts.interactive ? "group" : "img") + '" aria-label="Map of books, movies, people and companies by view of human nature (left to right) and outlook on AI (bottom to top)">';
     s += '<rect class="plot" x="' + L + '" y="' + T + '" width="' + W + '" height="' + Hh + '"/>';
     for (var i = 1; i < 10; i++) {
       if (i === 5) continue;
@@ -723,6 +719,7 @@ footer.colophon p + p { margin-top: 10px; }
       s += '<line class="grat" x1="' + gx + '" y1="' + T + '" x2="' + gx + '" y2="' + (T + Hh) + '"/>';
       s += '<line class="grat" x1="' + L + '" y1="' + gy + '" x2="' + (L + W) + '" y2="' + gy + '"/>';
     }
+    if (opts.heat) s += heatLayer(opts.heat);
     s += '<line class="midline" x1="' + cx + '" y1="' + T + '" x2="' + cx + '" y2="' + (T + Hh) + '"/>';
     s += '<line class="midline" x1="' + L + '" y1="' + cy + '" x2="' + (L + W) + '" y2="' + cy + '"/>';
     s += '<rect class="frame" x="' + L + '" y="' + T + '" width="' + W + '" height="' + Hh + '"/>';
@@ -919,6 +916,7 @@ footer.colophon p + p { margin-top: 10px; }
     $("verdict").textContent = verdict(res, quiz.answers[QUESTIONS.length - 1]);
     $("resultChart").innerHTML = chartSVG({ you: res });
     renderChart();
+    saveCrowd(res);
     lastSummary = "On The AI Compass I'm closest to " + near[0].it.n + " (" + coords(res.H, res.A) + "). Also near me: " + near.slice(1).map(function (r) { return r.it.n; }).join(" and ") + ".";
     $("toast").textContent = "";
     $("qPane").hidden = true;
@@ -970,16 +968,94 @@ footer.colophon p + p { margin-top: 10px; }
       h += '</div></div>';
     });
     $("quads").innerHTML = h;
-
-    var fiction = all.filter(function (c) { return isFiction(c.it); });
-    var real = all.filter(function (c) { return !isFiction(c.it); });
-    var f = function (r) { return (r >= 0 ? "+" : "\u2212") + Math.abs(r).toFixed(2); };
-    $("stats").innerHTML =
-      '<div class="stat"><div class="n">' + f(pearson(fiction)) + '</div><p class="l">Correlation between the two axes across the ' + fiction.length + ' books and movies.</p></div>' +
-      '<div class="stat"><div class="n">' + f(pearson(real)) + '</div><p class="l">The same measure across the ' + real.length + ' people and companies.</p></div>' +
-      '<div class="stat"><div class="n">' + Q.nw.filter(isFictionC).length + '</div><p class="l">Books or movies in the top-left corner, out of ' + Q.nw.length + ' entries there.</p></div>';
   }
-  function isFictionC(it) { return isFiction(it); }
+
+  /* ---------- Crowd heat map ---------- */
+  var crowd = { db: null, uid: null, canWrite: true, pending: null, rows: [], loaded: false };
+  function heatLayer(pts) {
+    if (!pts.length) return "";
+    var L = PLOT.l, T = PLOT.t, W = PLOT.w, Hh = PLOT.h, NX = 40, NY = 36, SIG = 0.075;
+    var grid = [], max = 0, i, j, k;
+    for (j = 0; j < NY; j++) {
+      for (i = 0; i < NX; i++) {
+        var gx = (i + 0.5) / NX, gy = (j + 0.5) / NY, v = 0;
+        for (k = 0; k < pts.length; k++) {
+          var dx = pts[k].x - gx, dy = pts[k].y - gy;
+          v += Math.exp(-(dx * dx + dy * dy) / (2 * SIG * SIG));
+        }
+        grid.push(v);
+        if (v > max) max = v;
+      }
+    }
+    var cw = W / NX, ch = Hh / NY;
+    var out = '<defs><filter id="heatBlur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="7"/></filter><clipPath id="heatClip"><rect x="' + L + '" y="' + T + '" width="' + W + '" height="' + Hh + '"/></clipPath></defs><g clip-path="url(#heatClip)" aria-hidden="true"><g filter="url(#heatBlur)">';
+    for (j = 0; j < NY; j++) {
+      for (i = 0; i < NX; i++) {
+        var f = grid[j * NX + i] / max;
+        if (f < 0.04) continue;
+        out += '<rect class="heat" x="' + (L + i * cw).toFixed(1) + '" y="' + (T + Hh - (j + 1) * ch).toFixed(1) + '" width="' + (cw + 0.4).toFixed(1) + '" height="' + (ch + 0.4).toFixed(1) + '" fill-opacity="' + (Math.pow(f, 0.85) * 0.78).toFixed(3) + '"/>';
+      }
+    }
+    return out + '</g></g>';
+  }
+  function validRow(d) {
+    return d && typeof d.h === "number" && typeof d.a === "number" && isFinite(d.h) && isFinite(d.a) && Math.abs(d.h) <= 1 && Math.abs(d.a) <= 1;
+  }
+  function renderCrowd() {
+    var pts = crowd.rows.map(function (d) { return { x: (d.h + 1) / 2, y: (d.a + 1) / 2, H: d.h, A: d.a }; });
+    var n = pts.length;
+    $("crowdChart").innerHTML = chartSVG({ heat: pts, you: state.you, noLabels: true });
+    $("crowdN").textContent = n ? n.toLocaleString() : "0";
+    var sub = n === 0 ? "No one has finished the quiz here yet. Yours will be the first point."
+      : (n === 1 ? "person has" : "people have") + " finished the quiz here.";
+    if (!crowd.canWrite) sub += " Your own answers can't be added from this view.";
+    $("crowdSub").textContent = sub;
+    var defs = [["ne", "Trust people, hopeful about AI"], ["nw", "Skeptical of people, hopeful about AI"], ["se", "Trust people, worried about AI"], ["sw", "Skeptical of people, worried about AI"], ["mid", "Near the middle on both"]];
+    var counts = { ne: 0, nw: 0, se: 0, sw: 0, mid: 0 };
+    pts.forEach(function (p) { counts[quadOf(p)]++; });
+    $("crowdQuads").innerHTML = n ? defs.map(function (d) {
+      var pct = Math.round(100 * counts[d[0]] / n);
+      return '<li><div class="qrow"><span>' + d[1] + '</span><span class="pct">' + pct + '%</span></div><div class="track"><b style="width:' + pct + '%"></b></div></li>';
+    }).join("") : "";
+  }
+  function saveCrowd(res) {
+    if (!crowd.db) return;
+    if (!crowd.uid) { crowd.pending = res; return; }
+    if (!crowd.canWrite) return;
+    var r2 = function (v) { return Math.round(v * 1000) / 1000; };
+    crowd.db.doc("responses/" + crowd.uid).set({ h: r2(res.H), a: r2(res.A), at: new Date().toISOString() }).catch(function (e) {
+      if (e && (e.code === "invalid_argument" || e.code === "not_granted")) { crowd.canWrite = false; renderCrowd(); }
+    });
+  }
+  function initCrowd() {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    window.claude.use("db").then(function (db) {
+      if (!db) return;
+      crowd.db = db;
+      $("crowd").hidden = false;
+      $("crowdLink").hidden = false;
+      $("crowdN").textContent = "…";
+      $("crowdSub").textContent = "Loading everyone's answers.";
+      var timer = setTimeout(function () { if (!crowd.loaded) $("crowdSub").textContent = "Everyone's answers are taking a while to load."; }, 10000);
+      db.collection("responses").limit(1000).onSnapshot(function (snap) {
+        crowd.loaded = true; clearTimeout(timer);
+        crowd.rows = snap.docs.map(function (d) { return d.data(); }).filter(validRow);
+        renderCrowd();
+      }, function () {
+        clearTimeout(timer);
+        $("crowdSub").textContent = "Everyone's answers couldn't be loaded right now.";
+      });
+      return window.claude.use("user").then(function (user) {
+        if (!user) { crowd.canWrite = false; return; }
+        return Promise.all([user.id(), user.can("data.write")]).then(function (r) {
+          crowd.uid = r[0];
+          if (!crowd.uid || r[1] === false) crowd.canWrite = false;
+          if (crowd.loaded) renderCrowd();
+          if (crowd.pending) { var p = crowd.pending; crowd.pending = null; saveCrowd(p); }
+        });
+      });
+    }).catch(function () {});
+  }
 
   /* ---------- Boot ---------- */
   renderFilters();
@@ -988,6 +1064,7 @@ footer.colophon p + p { margin-top: 10px; }
   renderNote();
   renderQuestion(false);
   renderFindings();
+  initCrowd();
 
   // Exposed for testing only
   window.__compass = { score: score, quadOf: quadOf, HA: HA, ITEMS: ITEMS, QUESTIONS: QUESTIONS };
